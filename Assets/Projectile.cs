@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    private Faction faction;
+    public Faction Faction {
+        get { return faction; }
+        set { faction = value; }
+    }
+
+    private int damage = 10;
+    public int Damage {
+        get { return damage; }
+        set { damage = value; }
+    }
+
     [SerializeField]
     Rigidbody rb;
     [SerializeField]
@@ -27,6 +39,12 @@ public class Projectile : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision) {
+        var unit = collision.collider.GetComponent<Unit>();
+        if (unit) {
+            if(unit.Faction != faction) {
+                unit.DealDamage(this);
+            }
+        }
         Destroy(gameObject);
     }
 }

@@ -12,7 +12,10 @@ public class Weapon
     private Projectile ProjectilePrefab;
     public Projectile Projectile => ProjectilePrefab;
 
+    [SerializeField]
     private float Damage = 10;
+
+    [SerializeField]
     private float Cooldown = 0.5f;
 
     private float currentCooldown = 0;
@@ -23,6 +26,7 @@ public class Weapon
 
     public void Shoot(Projectile projectile, Vector3 target) {
         currentCooldown = Cooldown;
+        projectile.Damage = (int)Damage;
         projectile.Attack(target);
     }
 

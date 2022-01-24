@@ -9,6 +9,7 @@ public class PlayerShoot : MonoBehaviour
     private int CurrentWeaponIndex = 0;
     public List<Weapon> weapons;
 
+    private TargetFinder targetFinder;
 
     private Weapon CurrentWeapon => weapons[CurrentWeaponIndex];
 
@@ -17,10 +18,10 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField]
     private Transform graphics;
 
-    [SerializeField]
-    private Transform target;
+    private Unit target;
 
     private void Awake() {
+        targetFinder = GetComponent<TargetFinder>();
         playerController = GetComponent<PlayerController>();
     }
 
@@ -29,20 +30,27 @@ public class PlayerShoot : MonoBehaviour
 
     }
 
+
+
     // Update is called once per frame
     void Update() {
         CurrentWeapon.LowerCooldown(Time.deltaTime);
 
+        target = targetFinder.GetClosestEnemy();
+        if (!target)
+            return;
+
         if (playerController.CurrentMoveVector.sqrMagnitude == 0) {
-            var dir = target.position - transform.position;
+            var dir = target.transform.position - transform.position;
 
-            graphics.LookAt(target);
-
+            //graphics.LookAt(target);
+            transform.rotation = Quaternion.LookRotation(dir.normalized);
             if (CurrentWeapon.CanShoot) {
                 var projectile = CurrentWeapon.Projectile;
 
                 var proj = Instantiate(projectile, shootPoint.position, Quaternion.identity);
-                CurrentWeapon.Shoot(proj, target.position);
+                proj.Faction = Faction.Friendly;
+                CurrentWeapon.Shoot(proj, target.transform.position);
                 //Instantiate()
             }
         }

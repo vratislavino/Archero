@@ -15,7 +15,9 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = true;
     }
 
     // Update is called once per frame
@@ -27,6 +29,7 @@ public class PlayerController : MonoBehaviour
         currentMoveVector = new Vector3(hor, 0, vert).normalized;
         if(currentMoveVector.sqrMagnitude > 0) {
             agent.Move(currentMoveVector * Time.deltaTime * speed);
+            transform.rotation = Quaternion.LookRotation(currentMoveVector);
         }
     }
 }
