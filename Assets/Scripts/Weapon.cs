@@ -24,10 +24,10 @@ public class Weapon
         get { return currentCooldown <= 0; }
     }
 
-    public void Shoot(Projectile projectile, Vector3 target) {
+    public void Shoot(Projectile projectile, Vector3 direction) {
         currentCooldown = Cooldown;
         projectile.Damage = (int)Damage;
-        projectile.Attack(target);
+        projectile.Attack(direction);
     }
 
     public void LowerCooldown(float time) {

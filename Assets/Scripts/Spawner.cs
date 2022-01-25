@@ -16,13 +16,21 @@ public class Spawner : SceneSingleton<Spawner>
     [SerializeField]
     private List<Unit> enemyPrefabs;
 
+    public bool TestManyEnemies = false;
+    public float spawnRate = 0.1f;
+    public bool SpawnOnKill = false;
+
     protected override void Awake() {
         base.Awake();
         spawnPoints = spawnpointsParent.GetComponentsInChildren<Transform>().ToList();
     }
 
     private void Start() {
-        SpawnRandomEnemy();
+        if (TestManyEnemies)
+            InvokeRepeating("SpawnRandomEnemy", 0, spawnRate);
+        else
+            SpawnRandomEnemy();
+
     }
 
     void SpawnRandomEnemy() {
@@ -47,8 +55,9 @@ public class Spawner : SceneSingleton<Spawner>
     }
 
     private void OnEnemyDied(Unit unit) {
+        unit.Died -= OnEnemyDied;
         spawnedEnemyUnits.Remove(unit);
-        Destroy(unit.gameObject);
-        SpawnRandomEnemy();
+        if(SpawnOnKill)
+            SpawnRandomEnemy();
     }
 }

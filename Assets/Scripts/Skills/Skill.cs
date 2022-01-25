@@ -1,16 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
-public class NaveMeshTest : MonoBehaviour
+public class Skill : MonoBehaviour
 {
-    NavMeshAgent agent;
-
-    private void Awake() {
-        agent = GetComponent<NavMeshAgent>();
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +13,6 @@ public class NaveMeshTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        agent.SetDestination(Vector3.forward * 5);
+        
     }
 }

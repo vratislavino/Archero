@@ -31,11 +31,8 @@ public class Projectile : MonoBehaviour
         
     }
 
-    public void Attack(Vector3 target) {
-        var dir = target - transform.position;
-        dir.Normalize();
-        transform.LookAt(target);
-        rb.AddForce(dir * projectileSpeed, ForceMode.Impulse);  
+    public void Attack(Vector3 dir) {
+        rb.AddForce(transform.forward * projectileSpeed, ForceMode.Impulse);  
     }
 
     private void OnCollisionEnter(Collision collision) {
@@ -44,6 +41,19 @@ public class Projectile : MonoBehaviour
             if(unit.Faction != faction) {
                 unit.DealDamage(this);
             }
+        } else {
+
+            /*
+            if (false) {
+                var vel = rb.velocity;
+                rb.velocity = Vector3.zero;
+                vel.x *= -1;
+                rb.velocity = vel;
+                transform.Rotate(0, 180, 0);
+
+            } else {
+                Destroy(gameObject);
+            }*/
         }
         Destroy(gameObject);
     }
